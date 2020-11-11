@@ -34,7 +34,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/start"
 
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/help"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +67,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/exit"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
