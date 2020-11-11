@@ -3,6 +3,7 @@ package com.example.game2048;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,7 @@ public class GameActivity extends Activity {
 
 
     int[][] a=new int[4][4];    //棋盘里的数
-    int cnt=0;
+    int cnt=0,ma=0;
     @Override
 
     protected void onCreate(Bundle savedInstanceState)
@@ -53,9 +54,29 @@ public class GameActivity extends Activity {
                 goLeft();
             }
         });
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goRight();
+            }
+        });
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goDown();
+            }
+        });
+        Button restart = findViewById(R.id.restart);
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cnt=0;
+                init();
+            }
+        });
     }
     public void init(){
-
+        cnt=0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 a[i][j]=0;
@@ -83,12 +104,34 @@ public class GameActivity extends Activity {
         textView[14]=findViewById(R.id.a14);
         textView[15]=findViewById(R.id.a15);
         for(int i=0;i<16;i++){
-            textView[i].setText(String.valueOf(a[i/4][i%4]));
+            textView[i].setTextSize(30);
+            textView[i].setWidth(50);
+            textView[i].setHeight(30);
+
+            int p=a[i/4][i%4];
+            if(p==0)textView[i].setBackgroundColor(0x1416CCFA);
+            if(p==2)textView[i].setBackgroundColor(0x8888FFFF);
+            if(p==4)textView[i].setBackgroundColor(Color.LTGRAY);
+            if(p==8)textView[i].setBackgroundColor(Color.GRAY);
+            if(p==16)textView[i].setBackgroundColor(0x129471FD);
+            if(p==32)textView[i].setBackgroundColor(Color.GREEN);
+            if(p==64)textView[i].setBackgroundColor(Color.RED);
+            if(p==128)textView[i].setBackgroundColor(0x900000FF);
+            if(p==256)textView[i].setBackgroundColor(Color.YELLOW);
+            if(p==512)textView[i].setBackgroundColor(Color.BLUE);
+            if(p==1024)textView[i].setBackgroundColor(Color.CYAN);
+            if(p==2048)textView[i].setBackgroundColor(0x6EF11000);
+
+            if(p!=0)textView[i].setText(String.valueOf(p));
+            else textView[i].setText("");
         }
 
         TextView score = findViewById(R.id.score);
+        TextView maxscore = findViewById(R.id.maxscore);
+        ma=Math.max(ma,cnt);
         Log.d("before","cnt="+cnt);
         score.setText(""+cnt);
+        maxscore.setText(""+ma);
         Log.d("after","cnt="+cnt);
     }
     public void goLeft(){
@@ -102,7 +145,7 @@ public class GameActivity extends Activity {
                         else if (a[i][k] == a[i][j]) {
                             jud = 1;
                             a[i][k] *= 2;
-                            cnt += a[i][k] * 2;
+                            cnt += a[i][k] ;
                             a[i][j] = -1;
                             break;
                         }//先标记成-1，避免继续合并。
@@ -134,13 +177,131 @@ public class GameActivity extends Activity {
         checkBox();
     }
     public void goRight(){
-        //TODO
+        int jud=0;
+        int i,j,k;
+        for(i=0;i<4;i++){
+            for(j=2;j>=0;j--){
+                if(a[i][j]!=0) {
+                    for (k = j + 1; k < 4; k++) {
+                        if (a[i][k] == 0) continue;
+                        else if (a[i][k] == a[i][j]) {
+                            jud = 1;
+                            a[i][k] *= 2;
+                            cnt += a[i][k] ;
+                            a[i][j] = -1;
+                            break;
+                        }//先标记成-1，避免继续合并。
+                        else break;
+                    }
+                }
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=0;j<4;j++){
+                if(a[i][j]==-1)a[i][j]=0;
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=2;j>=0;j--){
+                if(a[i][j]!=0) {
+                    for (k = j +1; k <4; k++) {
+                        if (a[i][k] == 0) {
+                            jud = 1;
+                            a[i][k] = a[i][k - 1];
+                            a[i][k - 1] = 0;
+                        } else break;
+                    }
+                }
+            }
+        }
+        if(jud==1)createNewRand();
+        setPan();
+        checkBox();
     }
     public void goUp(){
         //TODO
+        int jud=0;
+        int i,j,k;
+        for(i=0;i<4;i++){
+            for(j=1;j<4;j++){
+                if(a[j][i]!=0) {
+                    for (k = j - 1; k >= 0; k--) {
+                        if (a[k][i] == 0) continue;
+                        else if (a[k][i] == a[j][i]) {
+                            jud = 1;
+                            a[k][i] *= 2;
+                            cnt += a[k][i] ;
+                            a[j][i] = -1;
+                            break;
+                        }//先标记成-1，避免继续合并。
+                        else break;
+                    }
+                }
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=0;j<4;j++){
+                if(a[i][j]==-1)a[i][j]=0;
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=1;j<4;j++){
+                if(a[j][i]!=0) {
+                    for (k = j - 1; k >= 0; k--) {
+                        if (a[k][i] == 0) {
+                            jud = 1;
+                            a[k][i] = a[k+1][i];
+                            a[k+1][i] = 0;
+                        } else break;
+                    }
+                }
+            }
+        }
+        if(jud==1)createNewRand();
+        setPan();
+        checkBox();
     }
     public void goDown(){
-        //TODO
+        int jud=0;
+        int i,j,k;
+        for(i=0;i<4;i++){
+            for(j=2;j>=0;j--){
+                if(a[j][i]!=0) {
+                    for (k = j + 1; k < 4; k++) {
+                        if (a[k][i] == 0) continue;
+                        else if (a[k][i] == a[j][i]) {
+                            jud = 1;
+                            a[k][i] *= 2;
+                            cnt += a[k][i] ;
+                            a[j][i] = -1;
+                            break;
+                        }//先标记成-1，避免继续合并。
+                        else break;
+                    }
+                }
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=0;j<4;j++){
+                if(a[i][j]==-1)a[i][j]=0;
+            }
+        }
+        for(i=0;i<4;i++){
+            for(j=2;j>=0;j--){
+                if(a[j][i]!=0) {
+                    for (k = j +1; k <4; k++) {
+                        if (a[k][i] == 0) {
+                            jud = 1;
+                            a[k][i] = a[k-1][i];
+                            a[k-1][i] = 0;
+                        } else break;
+                    }
+                }
+            }
+        }
+        if(jud==1)createNewRand();
+        setPan();
+        checkBox();
     }
 
     //检测是否可以继续游戏
