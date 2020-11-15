@@ -251,6 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
+            android:textSize="24dp"
             android:text="↑" />
     </LinearLayout>
 
@@ -266,6 +267,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="24dp"
             android:text="←" />
 
         <Button
@@ -282,6 +284,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="24dp"
             android:text="→" />
     </LinearLayout>
 
@@ -297,6 +300,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:textSize="24dp"
             android:layout_weight="1"
             android:text="↓" />
     </LinearLayout>

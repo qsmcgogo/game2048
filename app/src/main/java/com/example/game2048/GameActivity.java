@@ -219,7 +219,6 @@ public class GameActivity extends Activity {
         checkBox();
     }
     public void goUp(){
-        //TODO
         int jud=0;
         int i,j,k;
         for(i=0;i<4;i++){
@@ -337,7 +336,10 @@ public class GameActivity extends Activity {
     public void createNewRand(){
         while(true){
             Random rand =new Random();
-            int st=(rand.nextInt(2)+1)*2;
+            int p=rand.nextInt(3);
+            int st;
+            if(p==0)st=4;
+            else st=2;
             int x=rand.nextInt(4);
             int y=rand.nextInt(4);
             if(a[x][y]!=0)continue;
